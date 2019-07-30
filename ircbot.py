@@ -23,12 +23,14 @@ class ircbot(object):
             self.__irc_socket.send(bytes("JOIN " + self.__channel + "\r\n", encoding="utf8"))
         except Exception as e:
             print("Exception: ", e)
+    #TODO 最好是把PONG放这里，不是PONG消息的话，再返回
     def readline(self):
             buf = self.__irc_socket.recv(512)
             if buf:
                 return buf
             else:
                 return None
+    #TODO 向sock写消息
     def sendline(self, message):
         pass
 
