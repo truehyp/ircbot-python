@@ -7,7 +7,8 @@ import socket
 import threading
 from datetime import datetime
 import logging
-logging.basicConfig(level=logging.INFO)
+from ircutil import ircutil
+logging.basicConfig(level=logging.DEBUG)
 
 
 def nowtime():
@@ -38,10 +39,10 @@ class ircbot(object):
             buf = self.__irc_socket.recv(512)
             if buf:
                 buf = buf.decode('utf-8')
-                if (buf.startswith('PING')):
+                #if (buf.startswith('PING')):
+                if (ircutil.isPing(buf)):
                     logging.info(nowtime()+' '+buf)
                     self.pong(buf)
-                    self.sendmessage("hahah")
                     return None
                 else:
                     return buf
