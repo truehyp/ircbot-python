@@ -8,6 +8,7 @@ import threading
 from datetime import datetime
 import logging
 from ircutil import ircutil
+import settings
 logging.basicConfig(level=logging.DEBUG)
 
 
@@ -17,11 +18,11 @@ def nowtime():
 
 class ircbot(object):
 
-    def __init__(self, server='irc.freenode.net', port=6667, botname='truehypbbb', channel='#buxingjie'):
-        self.__server = server
-        self.__port = port
-        self.__botname = botname
-        self.__channel = channel
+    def __init__(self):
+        self.__server = settings.IRC_SERVER
+        self.__port = settings.IRC_PORT
+        self.__botname = settings.IRC_BOTNAME
+        self.__channel = settings.IRC_CHANNEL
         self.__irc_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     def connect(self):
         try:
@@ -54,7 +55,7 @@ class ircbot(object):
     def pong(self, message):
         message = message.replace('PING', 'PONG', 1)
         logging.info(nowtime()+' '+message)
-        self.__irc_socket.send(message.encode())
+        self.sendmessage(message.encode())
     def sendmessage(self, message):
         self.pong('PING irc.freenode.net\r\n')
         message = ('PRIVMSG'+' '+self.__channel+' :'+message+'\r\n')
